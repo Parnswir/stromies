@@ -14,14 +14,15 @@ if len(secrets) < 3:
   print('There needs to be a file named secrets.txt which contains the server URL and credentials divided by line breaks.')
   exit(1)
 
-if len(sys.argv) <= 1:
-  print('Too few arguments. generate.py num_users [first_id]')
+if len(sys.argv) <= 2:
+  print('Too few arguments. generate.py metric num_users [first_id]')
   exit(1)
 
-num_users = int(sys.argv[1])
+metric = sys.argv[1]
+num_users = int(sys.argv[2])
 first_id = 0
-if len(sys.argv) > 2:
-  first_id = int(sys.argv[2])
+if len(sys.argv) > 3:
+  first_id = int(sys.argv[3])
 
 SERVER_URL = secrets[0]
 BASIC_AUTH = HTTPBasicAuth(secrets[1], secrets[2])
@@ -48,15 +49,28 @@ def random_key_time(day, mean_time, variance):
 
 
 def random_consumption():
-  return random.normalvariate(1, 0.2)
+  if metric == 'electricity':
+    return random.normalvariate(1, 0.2)
+  elif metric == 'water':
+    if random.random() > 0.98:
+      return random.normalvariate(10, 1.0)
+    return 0
 
 
 def random_lunch_consumption():
-  return random.normalvariate(0.3, 0.1)
+  if metric == 'electricity':
+    return random.normalvariate(0.3, 0.1)
+  elif metric == 'water':
+    if random.random() > 0.95:
+      return random.normalvariate(10, 1.0)
+    return 0
 
 
 def random_night_consumption():
-  return random.uniform(0.0, 0.1)
+  if metric == 'electricity':
+    return random.uniform(0.0, 0.1)
+  elif metric == 'water':
+    return 0
 
 
 def record_consumption(datapoints, timestamp, value):
@@ -65,7 +79,7 @@ def record_consumption(datapoints, timestamp, value):
 def send_data(datapoints, user_id):
   print("Sending data... (%d items)" % (len(datapoints),))
   payload = {
-    "name": "archive.consumption.electricity",
+    "name": "archive.consumption." + metric,
     "datapoints": datapoints,
     "type": "double",
     "tags": {'user': user_id}
