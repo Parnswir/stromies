@@ -1,5 +1,18 @@
 import random
+import json
+import requests
+from requests.auth import HTTPBasicAuth
 from datetime import datetime, date, time, timedelta
+
+with open('secrets.txt', 'r') as f:
+  secrets = f.read().split('\n')
+
+if len(secrets) < 3:
+  print('There needs to be a file named secrets.txt which contains the server URL and credentials divided by line breaks.')
+  exit(1)
+
+SERVER_URL = secrets[0]
+BASIC_AUTH = HTTPBasicAuth(secrets[1], secrets[2])
 
 DAY_START_TIME = time(8, 30, 0)
 DAY_END_TIME = time(17, 0, 0)
@@ -8,6 +21,10 @@ DAY_VARIANCE_IN_MINUTES = 60
 LUNCH_START_TIME = time(12, 0, 0)
 LUNCH_END_TIME = time(12, 30, 0)
 LUNCH_VARIANCE_IN_MINUTES = 15
+
+
+def is_weekday(day):
+  return day.date().weekday() not in [5, 6]
 
 
 def random_date_between(start, end):
@@ -19,38 +36,59 @@ def random_key_time(day, mean_time, variance):
 
 
 def random_consumption():
-  return random.uniform(0.5, 1.6)
+  return random.normalvariate(1, 0.2)
 
 
 def random_lunch_consumption():
-  return random.uniform(0.08, 0.8)
+  return random.normalvariate(0.3, 0.1)
 
 
-def record_consumption(timestamp, value):
-  print
+def random_night_consumption():
+  return random.uniform(0.0, 0.1)
 
 
-for day in [datetime(2018, 1, 1) + timedelta(x, 0) for x in range(0, 13)]:
-  print(day)
+def record_consumption(datapoints, timestamp, value):
+  datapoints.append([int(timestamp.timestamp() * 1000), value])
 
-  start_time = random_key_time(day, DAY_START_TIME, DAY_VARIANCE_IN_MINUTES * 60)
-  end_time = random_key_time(day, DAY_END_TIME, DAY_VARIANCE_IN_MINUTES * 60)
-  lunch_start = random_key_time(day, LUNCH_START_TIME, LUNCH_VARIANCE_IN_MINUTES * 60)
-  lunch_end = random_key_time(day, LUNCH_END_TIME, LUNCH_VARIANCE_IN_MINUTES * 60)
+def send_data(datapoints):
+  print('Sending data...')
+  payload = {
+    "name": "archive.consumption.electricity",
+    "datapoints": datapoints,
+    "type": "double",
+    "tags": {'user': 0}
+  }
+  r = requests.post(SERVER_URL, json=payload, auth=BASIC_AUTH)
+  datapoints = []
+  print('  -> ', r.status_code, r.text)
 
-  current_time = start_time
 
-  print('Start time:', start_time)
-  while current_time < end_time:
-    current_time += timedelta(0, 60)
-    consumption = 0
+consumption = 0
+datapoints = []
 
-    if current_time > lunch_start and current_time < lunch_end:
-      consumption = random_lunch_consumption()
-    else:
-      consumption = random_consumption()
+start_day = datetime(2017, 1, 1)
+num_days = 365
+current_time = start_day
+last_day = datetime(1970, 1, 1)
 
-    record_consumption(current_time, consumption)
-  print('End time:', end_time)
+while current_time < start_day + timedelta(num_days, 0):
+  if current_time.date() != last_day:
+    start_time = random_key_time(current_time, DAY_START_TIME, DAY_VARIANCE_IN_MINUTES * 60)
+    end_time = random_key_time(current_time, DAY_END_TIME, DAY_VARIANCE_IN_MINUTES * 60)
+    lunch_start = random_key_time(current_time, LUNCH_START_TIME, LUNCH_VARIANCE_IN_MINUTES * 60)
+    lunch_end = random_key_time(current_time, LUNCH_END_TIME, LUNCH_VARIANCE_IN_MINUTES * 60)
+    last_day = current_time.date()
+    weekday = is_weekday(current_time)
 
-  print('\n')
+  if weekday and current_time > lunch_start and current_time < lunch_end:
+    consumption += random_lunch_consumption()
+  elif weekday and current_time > start_time and current_time < end_time:
+    consumption += random_consumption()
+  else:
+    consumption += random_night_consumption()
+
+  record_consumption(datapoints, current_time, consumption)
+  current_time += timedelta(0, 60)
+
+send_data(datapoints)
+print('done.')
