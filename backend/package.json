@@ -8,5 +8,8 @@
   },
   "author": "Martin Michaelis <code@mgjm.de>",
   "license": "UNLICENSED",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
