@@ -1,3 +1,84 @@
 page-home {
+  $green: #A1DBB2;
+  $yellow: #FEE5AD;
+  $red: #F45D4C;
+  $orange: #b2a1db;
+  $triangleR: 90px;
 
+  #header {
+    height: 200px;
+    width: 100%;
+    background-color: $orange;
+    padding: -20px -20px;
+    position: relative;
+    #coins {
+      height: 140px;
+      width: 140px;
+      border-radius: 50%;
+      border-color: white;
+      border-width: 2px;
+      border-style: solid;
+      margin-left: 25%;
+      position: absolute;
+      top: 15%;
+      right: 50%;
+      #headerContent {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        #headerText{
+          font-size: 30px;
+          text-align: center;
+          margin: auto;
+          color: white;
+        }
+      }
+    }
+    #rank {
+      position: absolute;
+      right: 15%;
+      text-align: center;
+      color: white;
+      #divRank {
+        top: 15%;
+        width: 100px;
+      }
+      #comRank {
+        top: 40%;
+        width: 100px;
+      }
+      h1 {
+        margin-bottom:-15px;
+      }
+    }
+  }
+
+
+
+ .icon {
+    padding: 0.6em 0;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 3em;
+  }
+  #leaf {
+    color: $green;
+  }
+  #trophy, #flash {
+    color: $yellow;
+  }
+  #car {
+    color: $red;
+  }
+  #heart {
+    font-size: 1em;
+  }
+
+  .menuText {
+    text-align:center;
+    font-size: 1.5em;
+
+  }
 }
