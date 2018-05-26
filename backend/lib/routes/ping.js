@@ -2,6 +2,6 @@
 
 const router = require('.');
 
-router.get('/ping', (req, res) => {
-	res.send('pong\n');
+router.get('/ping', ctx => {
+	ctx.body = 'pong';
 });
