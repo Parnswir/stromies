@@ -22,7 +22,7 @@ router.post('/user/:userID', bodyParser, async ctx => {
 
 // 2017-01-01 to 2017-02-01
 const FROM_DEFAULT = 1483225200000;
-const TO_DEFAULT = 1483225200000;
+const TO_DEFAULT = 1485903600000;
 
 router.get('/user/:userID/activities', async ctx => {
 	const {userID} = ctx.params;
