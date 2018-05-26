@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "stromies-backend",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Michaelis <code@mgjm.de>",
+  "license": "UNLICENSED",
+  "description": ""
+}
