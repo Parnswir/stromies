@@ -15,10 +15,13 @@ if len(secrets) < 3:
   exit(1)
 
 if len(sys.argv) <= 1:
-  print('Too few arguments. generate.py num_users')
+  print('Too few arguments. generate.py num_users [first_id]')
   exit(1)
 
 num_users = int(sys.argv[1])
+first_id = 0
+if len(sys.argv) > 2:
+  first_id = int(sys.argv[2])
 
 SERVER_URL = secrets[0]
 BASIC_AUTH = HTTPBasicAuth(secrets[1], secrets[2])
@@ -60,7 +63,7 @@ def record_consumption(datapoints, timestamp, value):
   datapoints.append([int(timestamp.timestamp() * 1000), value])
 
 def send_data(datapoints, user_id):
-  print('Sending data...')
+  print("Sending data... (%d items)" % (len(datapoints),))
   payload = {
     "name": "archive.consumption.electricity",
     "datapoints": datapoints,
@@ -72,10 +75,13 @@ def send_data(datapoints, user_id):
   print('  -> ', r.status_code, r.text)
 
 
-for user_id in range(0, num_users):
+for user_id in range(first_id, first_id + num_users):
   print('Generating user data for user', user_id)
   consumption = 0
   datapoints = []
+
+  num_holidays = 28 + random.randrange(0, 6, 1)
+  holiday = False
 
   start_day = datetime(2017, 1, 1)
   num_days = 365
@@ -90,10 +96,16 @@ for user_id in range(0, num_users):
       lunch_end = random_key_time(current_time, LUNCH_END_TIME, LUNCH_VARIANCE_IN_MINUTES * 60)
       last_day = current_time.date()
       weekday = is_weekday(current_time)
+      if num_holidays > 0:
+        holiday = weekday and (random.random() > 0.95 or (holiday and random.random() > 0.5))
+        if holiday:
+          num_holidays -= 1
+      else:
+        holiday = False
 
-    if weekday and current_time > lunch_start and current_time < lunch_end:
+    if weekday and current_time > lunch_start and current_time < lunch_end and not holiday:
       consumption += random_lunch_consumption()
-    elif weekday and current_time > start_time and current_time < end_time:
+    elif weekday and current_time > start_time and current_time < end_time and not holiday:
       consumption += random_consumption()
     else:
       consumption += random_night_consumption()
