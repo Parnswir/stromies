@@ -25,8 +25,8 @@ export class EnergyPage {
 	}
 
 	async ionViewDidLoad() {
-		const activity = await this.dataService.getActivities(1, 'electricity');
-		const data = activity.queries[0].results[0].values.map(([x, y]) => ({x, y}));
+		const activity = await this.dataService.getActivities(0, 'electricity');
+		const data = activity.queries[0].results[0].values.map(([x, y]) => ({x:x-23200000, y}));
 		console.log(data);
 
 
@@ -69,7 +69,7 @@ export class EnergyPage {
 						display: true,
 						scaleLabel: {
 							display: true,
-							labelString: 'KWH'
+							labelString: 'Wm'
 						}
 					}]
 				}

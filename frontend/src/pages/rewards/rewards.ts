@@ -24,7 +24,7 @@ export class RewardsPage {
 
   presentToast() {
     let toast = this.toastCtrl.create({
-      message: '50 ECOins will be debited in about 3 min!',
+      message: '100 ECOins will be debited in about 3 min!',
       duration: 5000,
 	  position: 'top'
     });

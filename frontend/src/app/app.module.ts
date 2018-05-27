@@ -14,6 +14,9 @@ import {RewardsPage} from '../pages/rewards/rewards';
 import {EventsPage} from '../pages/events/events';
 import {PopoverComponent} from '../components/popover/popover';
 import { Data } from '../providers/data/data';
+import { WaterPage } from '../pages/water/water';
+import {CoinsPage} from '../pages/coins/coins';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +27,9 @@ import { Data } from '../providers/data/data';
     ActivitiesPage,
     RewardsPage,
     EventsPage,
-    PopoverComponent
+    PopoverComponent,
+	WaterPage,
+	CoinsPage,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +45,9 @@ import { Data } from '../providers/data/data';
     ActivitiesPage,
     RewardsPage,
     EventsPage,
-    PopoverComponent
+    PopoverComponent,
+	WaterPage,
+	CoinsPage,
   ],
   providers: [
     StatusBar,

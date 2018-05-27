@@ -20,6 +20,7 @@ import { Data } from '../../providers/data/data';
 })
 export class HomePage {
 
+
 	constructor(public navCtrl: NavController, public popoverCtrl: PopoverController, public dataService: Data) {}
 
 	ionViewDidLoad(){
@@ -44,7 +45,7 @@ export class HomePage {
       this.navCtrl.push(EnergyPage);
     }
     activitiesPage(){
-      this.navCtrl.push(ActivitiesPage);
+      this.navCtrl.push(WaterPage);
     }
     rewardsPage(){
       this.navCtrl.push(RewardsPage);

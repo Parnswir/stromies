@@ -24,7 +24,17 @@ export class Data {
     }
 
 	getActivities(userID, activities): any {
+		const ts = Math.round((new Date(2017,1,15)).getTime()  ) + 43200000;
+		const ts_end = Math.round((new Date(2017,1,16)).getTime() ) + 23200000;
+
+		const res = this.http.get(url`/user/${userID}/activityDetails?metrics=${activities}&from=${ts}&to=${ts_end}`);
+		return subscribeToPromise(res);
+	}
+
+	getActivitiesMonth(userID, activities): any {
 		const res = this.http.get(url`/user/${userID}/activities?metrics=${activities}`);
 		return subscribeToPromise(res);
 	}
+
+
 }
