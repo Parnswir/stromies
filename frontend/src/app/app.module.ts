@@ -11,6 +11,7 @@ import {EnergyPage} from '../pages/energy/energy';
 import {ActivitiesPage} from '../pages/activities/activities';
 import {RewardsPage} from '../pages/rewards/rewards';
 import {EventsPage} from '../pages/events/events';
+import {PopoverComponent} from '../components/popover/popover';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {EventsPage} from '../pages/events/events';
     EnergyPage,
     ActivitiesPage,
     RewardsPage,
-    EventsPage
+    EventsPage,
+    PopoverComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import {EventsPage} from '../pages/events/events';
     EnergyPage,
     ActivitiesPage,
     RewardsPage,
-    EventsPage
+    EventsPage,
+    PopoverComponent
   ],
   providers: [
     StatusBar,

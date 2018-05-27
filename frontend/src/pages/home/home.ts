@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, PopoverController } from 'ionic-angular';
 import {GasPage} from '../gas/gas';
 import {EnergyPage} from '../energy/energy';
 import {ActivitiesPage} from '../activities/activities';
 import {RewardsPage} from '../rewards/rewards';
 import {EventsPage} from '../events/events';
+import {PopoverComponent} from '../../components/popover/popover';
 
 
 @Component({
@@ -13,7 +14,7 @@ import {EventsPage} from '../events/events';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController, public popoverCtrl: PopoverController) {}
     gasPage(){
       this.navCtrl.push(GasPage);
     }
@@ -29,4 +30,16 @@ export class HomePage {
     eventsPage(){
       this.navCtrl.push(EventsPage);
     }
+
+    presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(PopoverComponent);
+    popover.present({
+      ev: myEvent
+    });
+    }
+
+    popover.onDidDismiss(popoverData => {
+      console.log(popoverData);
+    });
+
   }
