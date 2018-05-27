@@ -18,7 +18,7 @@ if len(sys.argv) <= 2:
   print('Too few arguments. generate.py metric num_users [first_id]')
   exit(1)
 
-metric = sys.argv[1]
+metrics = sys.argv[1].split(',')
 num_users = int(sys.argv[2])
 first_id = 0
 if len(sys.argv) > 3:
@@ -48,7 +48,7 @@ def random_key_time(day, mean_time, variance):
   return datetime.combine(day.date(), mean_time) + timedelta(0, random.random() * variance)
 
 
-def random_consumption():
+def random_consumption(metric):
   if metric == 'electricity':
     return random.normalvariate(1, 0.2)
   elif metric == 'water':
@@ -57,7 +57,7 @@ def random_consumption():
     return 0
 
 
-def random_lunch_consumption():
+def random_lunch_consumption(metric):
   if metric == 'electricity':
     return random.normalvariate(0.3, 0.1)
   elif metric == 'water':
@@ -66,18 +66,18 @@ def random_lunch_consumption():
     return 0
 
 
-def random_night_consumption():
+def random_night_consumption(metric):
   if metric == 'electricity':
     return random.uniform(0.0, 0.1)
   elif metric == 'water':
     return 0
 
 
-def record_consumption(datapoints, timestamp, value):
-  datapoints.append([int(timestamp.timestamp() * 1000), value])
+def record_consumption(datapoints, timestamp, metric, value):
+  datapoints[metric].append([int(timestamp.timestamp() * 1000), value])
 
-def send_data(datapoints, user_id):
-  print("Sending data... (%d items)" % (len(datapoints),))
+def send_data(metric, datapoints, user_id):
+  print("Sending data for %s... (%d items)" % (metric, len(datapoints),))
   payload = {
     "name": "archive.consumption." + metric,
     "datapoints": datapoints,
@@ -85,14 +85,13 @@ def send_data(datapoints, user_id):
     "tags": {'user': user_id}
   }
   r = requests.post(SERVER_URL, json=payload, auth=BASIC_AUTH)
-  datapoints = []
   print('  -> ', r.status_code, r.text)
 
 
 for user_id in range(first_id, first_id + num_users):
   print('Generating user data for user', user_id)
-  consumption = 0
-  datapoints = []
+  consumption = {metric: 0 for metric in metrics}
+  datapoints = {metric: [] for metric in metrics}
 
   num_holidays = 28 + random.randrange(0, 6, 1)
   holiday = False
@@ -117,15 +116,17 @@ for user_id in range(first_id, first_id + num_users):
       else:
         holiday = False
 
-    if weekday and current_time > lunch_start and current_time < lunch_end and not holiday:
-      consumption += random_lunch_consumption()
-    elif weekday and current_time > start_time and current_time < end_time and not holiday:
-      consumption += random_consumption()
-    else:
-      consumption += random_night_consumption()
+    for metric in metrics:
+      if weekday and current_time > lunch_start and current_time < lunch_end and not holiday:
+        consumption[metric] += random_lunch_consumption(metric)
+      elif weekday and current_time > start_time and current_time < end_time and not holiday:
+        consumption[metric] += random_consumption(metric)
+      else:
+        consumption[metric] += random_night_consumption(metric)
 
-    record_consumption(datapoints, current_time, consumption)
+      record_consumption(datapoints, current_time, metric, consumption[metric])
     current_time += timedelta(0, 60)
 
-  send_data(datapoints, user_id)
+  for metric in metrics:
+    send_data(metric, datapoints[metric], user_id)
 print('done.')
