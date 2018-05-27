@@ -18,9 +18,9 @@ export class PopoverComponent {
 
   constructor(public viewCtrl: ViewController) {
     this.items = [
-      {item: 'User Settings'},
-      {item: 'Notification Settings'},
-      {item: 'Log Out'},
+      {item: 'Edit personal data'},
+      {item: 'Settings'},
+      {item: 'About'}
     ];
   }
 

@@ -1,7 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Chart } from 'chart.js';
-import { Data } from '../../providers/data/data';
 
 /**
  * Generated class for the EnergyPage page.
@@ -16,9 +14,9 @@ import { Data } from '../../providers/data/data';
   templateUrl: 'energy.html',
 })
 export class EnergyPage {
-	@ViewChild('lineCanvas') lineCanvas;
 
-    lineChart: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  }
 
 	constructor(public navCtrl: NavController, public dataService: Data, public navParams: NavParams) {
 	}

@@ -48,25 +48,27 @@ def random_key_time(day, mean_time, variance):
   return datetime.combine(day.date(), mean_time) + timedelta(0, random.random() * variance)
 
 
-def random_consumption(metric):
+def random_consumption(metric, current_time):
   if metric == 'electricity':
-    return random.normalvariate(1, 0.2)
+    factor = 1.0 + 0.2 * int(current_time.time() >= time(16, 0, 0))
+    return random.normalvariate(1, 0.2) * factor
   elif metric == 'water':
     if random.random() > 0.98:
       return random.normalvariate(10, 1.0)
     return 0
 
 
-def random_lunch_consumption(metric):
+def random_lunch_consumption(metric, current_time):
   if metric == 'electricity':
     return random.normalvariate(0.3, 0.1)
   elif metric == 'water':
     if random.random() > 0.95:
+      factor = 1.0 + 0.2 * int(current_time.date().month in [5,6,7])
       return random.normalvariate(10, 1.0)
     return 0
 
 
-def random_night_consumption(metric):
+def random_night_consumption(metric, current_time):
   if metric == 'electricity':
     return random.uniform(0.0, 0.1)
   elif metric == 'water':
@@ -75,6 +77,7 @@ def random_night_consumption(metric):
 
 def record_consumption(datapoints, timestamp, metric, value):
   datapoints[metric].append([int(timestamp.timestamp() * 1000), value])
+
 
 def send_data(metric, datapoints, user_id):
   print("Sending data for %s... (%d items)" % (metric, len(datapoints),))
@@ -118,11 +121,11 @@ for user_id in range(first_id, first_id + num_users):
 
     for metric in metrics:
       if weekday and current_time > lunch_start and current_time < lunch_end and not holiday:
-        consumption[metric] += random_lunch_consumption(metric)
+        consumption[metric] += random_lunch_consumption(metric, current_time)
       elif weekday and current_time > start_time and current_time < end_time and not holiday:
-        consumption[metric] += random_consumption(metric)
+        consumption[metric] += random_consumption(metric, current_time)
       else:
-        consumption[metric] += random_night_consumption(metric)
+        consumption[metric] += random_night_consumption(metric, current_time)
 
       record_consumption(datapoints, current_time, metric, consumption[metric])
     current_time += timedelta(0, 60)
