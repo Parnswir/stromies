@@ -97,7 +97,7 @@ def query_user_data(user_id):
 def send_coins(user_id, datapoints):
   print('Sending ECOins to DB...')
   payload = {
-    "name": "archive.ecoins",
+    "name": "archive.consumption.ecoins",
     "datapoints": datapoints,
     "type": "long",
     "tags": {'user': user_id}
@@ -121,8 +121,8 @@ for user_id in range(0, num_users):
 
     for result_tuple in result["results"][0]["values"]:
       delta = average_values[result_tuple[0]] - result_tuple[1] # subtract metric values (1) at matching timestamps (0)
-      if (delta != 0 and abs(delta) <= 0.2):
-        transactions[result_tuple[0]] = (delta / abs(delta)) * int(abs(delta) / 0.2)
+      if (delta != 0 and abs(delta) > 0.1 and abs(delta) <= 0.3):
+        transactions[result_tuple[0]] = (delta / abs(delta))
 
   datapoints = []
   coins = 0

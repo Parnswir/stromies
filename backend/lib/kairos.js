@@ -25,7 +25,7 @@ class KairosClient {
 				name: `archive.consumption.${metric}`,
 				aggregators: [
 					{
-						name: 'sum',
+						name: 'max',
 						sampling: {
 							value: '1',
 							unit: 'hours',
