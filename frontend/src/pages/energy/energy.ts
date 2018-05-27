@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
+import { Data } from '../../providers/data/data';
 
 /**
  * Generated class for the EnergyPage page.
@@ -16,45 +17,62 @@ import { Chart } from 'chart.js';
 })
 export class EnergyPage {
 	@ViewChild('lineCanvas') lineCanvas;
-	
+
     lineChart: any;
 
-	constructor(public navCtrl: NavController) {
+	constructor(public navCtrl: NavController, public dataService: Data) {
 	}
 
-	ionViewDidLoad() {
+	async ionViewDidLoad() {
+		const activity = await this.dataService.getActivities(0, 'energy');
+		const data = activity.queries[0].results[0].values.map(([x, y]) => ({x, y}));
+		console.log(data);
+
 
 		this.lineChart = new Chart(this.lineCanvas.nativeElement, {
 
             type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
                 datasets: [
                     {
-                        label: "My First dataset",
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        spanGaps: false,
+                        label: "Energy",
+						backgroundColor: '#F00',
+						borderColor: '#F00',
+						fill: false,
+						data: data,
                     }
                 ]
-            }
-
+            },
+			options: {
+				responsive: true,
+				// title: {
+				// 	display: true,
+				// 	text: 'Chart.js Time Point Data'
+				// },
+				scales: {
+					xAxes: [{
+						type: 'time',
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						},
+						ticks: {
+							major: {
+								fontStyle: 'bold',
+								fontColor: '#FF0000'
+							}
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'KWH'
+						}
+					}]
+				}
+			},
         });
 
     }
