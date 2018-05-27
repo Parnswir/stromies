@@ -14,6 +14,9 @@ if len(secrets) < 3:
   print('There needs to be a file named secrets.txt which contains the server URL and credentials divided by line breaks.')
   exit(1)
 
+SERVER_URL = secrets[0]
+BASIC_AUTH = HTTPBasicAuth(secrets[1], secrets[2])
+
 if len(sys.argv) <= 2:
   print('Too few arguments. generate.py metric[,s] num_users [first_id]')
   exit(1)
@@ -24,8 +27,14 @@ first_id = 0
 if len(sys.argv) > 3:
   first_id = int(sys.argv[3])
 
-SERVER_URL = secrets[0]
-BASIC_AUTH = HTTPBasicAuth(secrets[1], secrets[2])
+def try_to_float(s):
+  try:
+    return float(s)
+  except Exception as e:
+    return 1.0
+
+with open('out.txt', 'r') as f:
+  seeds = map(lambda x: try_to_float(x) / 100.0, f.read().split('\n'))
 
 DAY_START_TIME = time(8, 30, 0)
 DAY_END_TIME = time(17, 0, 0)
@@ -35,6 +44,9 @@ LUNCH_START_TIME = time(12, 0, 0)
 LUNCH_END_TIME = time(12, 30, 0)
 LUNCH_VARIANCE_IN_MINUTES = 15
 
+
+def get_seed_factor():
+  return next(seeds)
 
 def is_weekday(day):
   return day.date().weekday() not in [5, 6]
@@ -51,26 +63,26 @@ def random_key_time(day, mean_time, variance):
 def random_consumption(metric, current_time):
   if metric == 'electricity':
     factor = 1.0 + 0.2 * int(current_time.time() >= time(16, 0, 0))
-    return random.normalvariate(1, 0.2) * factor
+    return random.normalvariate(1, 0.2) * factor * get_seed_factor()
   elif metric == 'water':
     if random.random() > 0.98:
-      return random.normalvariate(10, 1.0)
+      return random.normalvariate(10, 1.0) * get_seed_factor()
     return 0
 
 
 def random_lunch_consumption(metric, current_time):
   if metric == 'electricity':
-    return random.normalvariate(0.3, 0.1)
+    return random.normalvariate(0.3, 0.1) * get_seed_factor()
   elif metric == 'water':
     if random.random() > 0.95:
       factor = 1.0 + 0.2 * int(current_time.date().month in [5,6,7])
-      return random.normalvariate(10, 1.0)
+      return random.normalvariate(10, 1.0) * get_seed_factor()
     return 0
 
 
 def random_night_consumption(metric, current_time):
   if metric == 'electricity':
-    return random.uniform(0.0, 0.1)
+    return random.uniform(0.0, 0.1) * get_seed_factor()
   elif metric == 'water':
     return 0
 

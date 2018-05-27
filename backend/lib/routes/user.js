@@ -25,11 +25,21 @@ const FROM_DEFAULT = 1483225200000;
 const TO_DEFAULT = 1485903600000;
 
 router.get('/user/:userID/activities', async ctx => {
-	const {userID} = ctx.params;
+  const {userID} = ctx.params;
 
-	const from = ctx.query.from || FROM_DEFAULT;
-	const to = ctx.query.to || TO_DEFAULT;
-	const metrics = (ctx.query.metrics || 'electricity').split(',');
+  const from = ctx.query.from || FROM_DEFAULT;
+  const to = ctx.query.to || TO_DEFAULT;
+  const metrics = (ctx.query.metrics || 'electricity').split(',');
 
-	ctx.body = await new KairosClient().getActivities(userID, from, to, metrics);
+  ctx.body = await new KairosClient().getActivities(userID, from, to, metrics);
+});
+
+router.get('/user/:userID/activityDetails', async ctx => {
+  const {userID} = ctx.params;
+
+  const from = ctx.query.from || FROM_DEFAULT;
+  const to = ctx.query.to || TO_DEFAULT;
+  const metrics = (ctx.query.metrics || 'electricity').split(',');
+
+  ctx.body = await new KairosClient().getActivityDetails(userID, from, to, metrics);
 });
