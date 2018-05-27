@@ -15,6 +15,7 @@ const BASE_ERROR = {
 
 app.use(formatter);
 app.use(async (ctx, next) => {
+	ctx.set('Access-Control-Allow-Origin', '*');
 	await next();
 	if(ctx.body === undefined && !ctx.headerSent) {
 		ctx.code = 404;

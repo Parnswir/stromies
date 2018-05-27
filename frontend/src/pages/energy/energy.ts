@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Data } from '../../providers/data/data'
+import { Chart } from 'chart.js';
 
 /**
  * Generated class for the EnergyPage page.
@@ -15,14 +17,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EnergyPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
 
-	constructor(public navCtrl: NavController, public dataService: Data, public navParams: NavParams) {
+   @ViewChild('lineCanvas') lineCanvas;
+
+
+   lineChart: any;
+
+	constructor(public navCtrl: NavController, public dataService: Data) {
 	}
 
 	async ionViewDidLoad() {
-		const activity = await this.dataService.getActivities(0, this.navParams.get('activities'));
+		const activity = await this.dataService.getActivities(1, 'electricity');
 		const data = activity.queries[0].results[0].values.map(([x, y]) => ({x, y}));
 		console.log(data);
 
@@ -33,7 +38,7 @@ export class EnergyPage {
             data: {
                 datasets: [
                     {
-                        label: this.navParams.get('activities'),
+                        label: 'energy',
 						backgroundColor: '#F00',
 						borderColor: '#F00',
 						fill: false,

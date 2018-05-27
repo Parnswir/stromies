@@ -24,7 +24,7 @@ export class Data {
     }
 
 	getActivities(userID, activities): any {
-		const res = this.http.get(url`/user/${userID}/activities?activities=${activities}`);
+		const res = this.http.get(url`/user/${userID}/activities?metrics=${activities}`);
 		return subscribeToPromise(res);
 	}
 }
