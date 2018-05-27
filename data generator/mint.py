@@ -94,10 +94,22 @@ def query_user_data(user_id):
   return json.loads(r.text)['queries']
 
 
+def send_coins(user_id, datapoints):
+  print('Sending ECOins to DB...')
+  payload = {
+    "name": "archive.ecoins",
+    "datapoints": datapoints,
+    "type": "long",
+    "tags": {'user': user_id}
+  }
+  r = requests.post(SERVER_URL, json=payload, auth=BASIC_AUTH)
+  print('  -> ', r.status_code, r.text)
+
+
 query_average()
 for user_id in range(0, num_users):
   print('Calculating ECOins for user', user_id)
-  coins = 0
+  transactions = {}
 
   for result in query_user_data(user_id):
     metric_key = result["results"][0]["name"]
@@ -109,8 +121,16 @@ for user_id in range(0, num_users):
 
     for result_tuple in result["results"][0]["values"]:
       delta = average_values[result_tuple[0]] - result_tuple[1] # subtract metric values (1) at matching timestamps (0)
-      if (abs(delta) > 0.3):
-        coins += (delta / abs(delta))
+      if (delta != 0 and abs(delta) <= 0.2):
+        transactions[result_tuple[0]] = (delta / abs(delta)) * int(abs(delta) / 0.2)
+
+  datapoints = []
+  coins = 0
+  for timestamp in sorted(transactions):
+    coins += transactions[timestamp]
+    datapoints.append([timestamp, coins])
+
+  send_coins(user_id, datapoints)
   print("Coins total:", coins)
 
 
