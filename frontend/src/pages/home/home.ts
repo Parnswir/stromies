@@ -36,10 +36,14 @@ export class HomePage {
     popover.present({
       ev: myEvent
     });
-    }
 
     popover.onDidDismiss(popoverData => {
       console.log(popoverData);
     });
+
+
+    }
+
+
 
   }
