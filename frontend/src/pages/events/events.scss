@@ -1,3 +1,22 @@
 page-events {
-
+  $green: #A1DBB2;
+  .participating {
+     box-shadow: 0px 0px 0px 5px $green;
+  }
+  .reactions {
+    margin: -15px 0px 0px 0px;
+  }
+  .button {
+    color: $green;
+  }
+  #sonne {
+    margin-left: 125px;
+    font-size: 24px;
+    z-index: 10;
+  }
+  #coincount {
+    padding-top: -20px;
+    margin-top: -10px;
+    margin-bottom: -20px;
+  }
 }

@@ -21,9 +21,6 @@ export class EnergyPage {
 
    @ViewChild('lineCanvas') lineCanvas;
 
-
-   lineChart: any;
-
 	constructor(public navCtrl: NavController, public dataService: Data) {
 	}
 
