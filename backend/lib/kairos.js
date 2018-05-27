@@ -42,6 +42,45 @@ class KairosClient {
 		const json = await response.json();
 		return json;
 	}
+
+  async getActivityDetails(userId, from, to, metrics) {
+    const query = {
+      metrics: [],
+      start_absolute: from,
+      end_absolute: to,
+    };
+    for(const metric of metrics) {
+      query.metrics.push({
+        tags: {
+          user: [userId],
+        },
+        name: `archive.consumption.${metric}`,
+        aggregators: [
+           {
+            "name": "rate",
+            "sampling": {
+              "unit": "minutes",
+              "value": 1
+            }
+          },
+          {
+            "name": "avg",
+            "sampling": {
+              "value": "10",
+              "unit": "minutes"
+            }
+          }
+        ],
+      });
+    }
+    const response = await fetch(this.url, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(query),
+    });
+    const json = await response.json();
+    return json;
+  }
 }
 
 module.exports = KairosClient;
