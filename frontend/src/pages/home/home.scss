@@ -1,3 +1,102 @@
 page-home {
+  $green: #A1DBB2;
+  $yellow: #FEE5AD;
+  $red: #F45D4C;
+  $orange: #b2a1db;
+  $triangleR: 90px;
 
+  #header {
+    height: 200px;
+    width: 100%;
+    background-color: $orange;
+    padding: -20px -20px;
+    position: relative;
+    #coins {
+      height: 140px;
+      width: 140px;
+      border-radius: 50%;
+      border-color: white;
+      border-width: 2px;
+      border-style: solid;
+      margin-left: 25%;
+      position: absolute;
+      top: 15%;
+      right: 50%;
+      #headerContent {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        #headerText{
+          font-size: 30px;
+          text-align: center;
+          margin: auto;
+          color: white;
+        }
+      }
+    }
+    #rank {
+      position: absolute;
+      right: 15%;
+      text-align: center;
+      color: white;
+      #divRank {
+        padding-top: 20px;
+        top: 25%
+      }
+      #comRank {
+        top: 40%;
+      }
+      h1 {
+        margin-bottom:-15px;
+      }
+      hr {
+        border: 0;
+        height: 1px;
+        border-radius: 60%;
+        background-color: white;
+        margin: 5px 0px -10px 0px;
+      }
+    }
+  }
+#settings {
+    right: 16px;
+    position: absolute;
+    font-size: 38px;
+    top: 12px;
+}
+
+
+ .icon {
+    padding: 0.4em 0;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 3em;
+  }
+  #leaf {
+    color: $green;
+  }
+  #trophy, #flash {
+    color: $yellow;
+  }
+  #car {
+    color: $red;
+  }
+  #heart {
+    font-size: 1em;
+  }
+  #user {
+    margin-bottom: -15px;
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    color: white;
+  }
+
+  .menuText {
+    text-align:center;
+    font-size: 1.5em;
+
+  }
 }

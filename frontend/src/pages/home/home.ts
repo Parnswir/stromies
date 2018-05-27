@@ -6,6 +6,7 @@ import {ActivitiesPage} from '../activities/activities';
 import {RewardsPage} from '../rewards/rewards';
 import {EventsPage} from '../events/events';
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
