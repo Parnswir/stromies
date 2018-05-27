@@ -15,7 +15,7 @@ if len(secrets) < 3:
   exit(1)
 
 if len(sys.argv) <= 2:
-  print('Too few arguments. generate.py metric[,s] num_users [first_id]')
+  print('Too few arguments. generate.py metric num_users [first_id]')
   exit(1)
 
 metrics = sys.argv[1].split(',')
