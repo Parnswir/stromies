@@ -42,23 +42,34 @@ page-home {
       text-align: center;
       color: white;
       #divRank {
-        top: 15%;
-        width: 100px;
+        padding-top: 20px;
+        top: 25%
       }
       #comRank {
         top: 40%;
-        width: 100px;
       }
       h1 {
         margin-bottom:-15px;
       }
+      hr {
+        border: 0;
+        height: 1px;
+        border-radius: 60%;
+        background-color: white;
+        margin: 5px 0px -10px 0px;
+      }
     }
   }
-
+#settings {
+    right: 16px;
+    position: absolute;
+    font-size: 38px;
+    top: 12px;
+}
 
 
  .icon {
-    padding: 0.6em 0;
+    padding: 0.4em 0;
     vertical-align: middle;
     text-align: center;
     font-size: 3em;
@@ -74,6 +85,13 @@ page-home {
   }
   #heart {
     font-size: 1em;
+  }
+  #user {
+    margin-bottom: -15px;
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    color: white;
   }
 
   .menuText {
