@@ -1,34 +1,37 @@
 <ion-header>
   <ion-navbar>
     <ion-title text-center>
-      Hello, user.ID <ion-icon name='heart' id="heart"><a id="settings" (click)="presentPopover($event)">...</a></ion-icon>
+      Hello, Ben  <ion-icon name='heart' id="heart"></ion-icon>
+	 <a id="settings" (click)="presentPopover($event)">...</a>
+
     </ion-title>
   </ion-navbar>
 </ion-header>
+
 
 <ion-content class ="home">
   <div id="header">
     <div id="coins">
       <div id="headerContent">
-        <p id="headerText"> 95 <br> COINS </p>
+        <button id="headerText" (click)="coinPage();"> 95 <br> ECOins </button>
       </div>
      </div>
      <div id="rank">
-       <div id="divRank">
+       <button id="divRank" (click)="divRankPage();">
          <h1> #5 </h1>
          <p> DIVISION </p>
-       </div>
+       </button>
        <hr>
-       <div id="comRank">
+       <button id="comRank" (click)="comRankPage();">
          <h1> #42 </h1>
          <p> COMPANY </p>
-       </div>
+       </button>
      </div>
   </div>
   <ion-list inset>
     <button ion-item class="menuItem" (click)="activitiesPage();">
-      <ion-icon name='leaf' item-start id="leaf"></ion-icon>
-      <p class="menuText">Activities</p>
+      <ion-icon name='water' item-start id="water"></ion-icon>
+      <p class="menuText">Water</p>
     </button>
     <button ion-item class="menuItem" (click)="gasPage();">
       <ion-icon name='car' item-start id="car"></ion-icon>
@@ -38,12 +41,17 @@
       <ion-icon name='outlet' item-start id="flash"></ion-icon>
         <p class="menuText">Energy</p>
     </button>
+	<button ion-item class="menuItem" (click)="energyPage();">
+      <ion-icon name='plane' item-start id="plane"></ion-icon>
+        <p class="menuText">Flights</p>
+    </button>
+	<button ion-item class="menuItem" (click)="eventsPage();">
+      <ion-icon name='time' item-start id="time"></ion-icon>
+        <p class="menuText">Events</p>
+    </button>
     <button ion-item class="menuItem" (click)="rewardsPage();">
       <ion-icon name='trophy' item-start id="trophy"></ion-icon>
         <p class="menuText">Rewards</p>
     </button>
-    <button ion-item class="menuItem" (click)="eventsPage();">
-      <ion-icon name='time' item-start id="time"></ion-icon>
-        <p class="menuText">Events</p>
-    </button>
+
   </ion-list>

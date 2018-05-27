@@ -20,12 +20,33 @@ export class HomePage {
 	ionViewDidLoad(){
 		this.dataService.getRemoteData(0);
 	}
-
+	contactPage(){
+		this.navCtrl.push(EventsPage);
+	}
+	coinPage(){
+		this.navCtrl.push(EnergyPage, {
+  		  activities: ['coins']
+  	  });
+	}
+	divRankPage(){
+		this.navCtrl.push(EnergyPage, {
+  		  activities: ['divRank']
+  	  });
+	}
+	comRankPage(){
+		this.navCtrl.push(EnergyPage, {
+  		  activities: ['comRank']
+  	  });
+	}
     gasPage(){
-      this.navCtrl.push(GasPage);
+      this.navCtrl.push(EnergyPage, {
+		  activities: ['water']
+	  });
     }
     energyPage(){
-      this.navCtrl.push(EnergyPage);
+      this.navCtrl.push(EnergyPage, {
+		  activities: ['energy']
+	  });
     }
     activitiesPage(){
       this.navCtrl.push(ActivitiesPage);

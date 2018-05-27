@@ -23,7 +23,7 @@ export class Data {
 		return subscribeToPromise(res);
     }
 
-	getActivities(userID, activities) {
+	getActivities(userID, activities): any {
 		const res = this.http.get(url`/user/${userID}/activities?activities=${activities}`);
 		return subscribeToPromise(res);
 	}

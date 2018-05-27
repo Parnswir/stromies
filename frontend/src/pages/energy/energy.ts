@@ -20,11 +20,11 @@ export class EnergyPage {
 
     lineChart: any;
 
-	constructor(public navCtrl: NavController, public dataService: Data) {
+	constructor(public navCtrl: NavController, public dataService: Data, public navParams: NavParams) {
 	}
 
 	async ionViewDidLoad() {
-		const activity = await this.dataService.getActivities(0, 'energy');
+		const activity = await this.dataService.getActivities(0, this.navParams.get('activities'));
 		const data = activity.queries[0].results[0].values.map(([x, y]) => ({x, y}));
 		console.log(data);
 
@@ -35,7 +35,7 @@ export class EnergyPage {
             data: {
                 datasets: [
                     {
-                        label: "Energy",
+                        label: this.navParams.get('activities'),
 						backgroundColor: '#F00',
 						borderColor: '#F00',
 						fill: false,

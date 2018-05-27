@@ -33,6 +33,7 @@ page-home {
           text-align: center;
           margin: auto;
           color: white;
+		  background: transparent;
         }
       }
     }
@@ -41,12 +42,21 @@ page-home {
       right: 15%;
       text-align: center;
       color: white;
+
       #divRank {
         padding-top: 20px;
-        top: 25%
+        top: 25%;
+		background: transparent;
+		color: white;
+
+
       }
       #comRank {
         top: 40%;
+		background: transparent;
+		color: white;
+
+
       }
       h1 {
         margin-bottom:-15px;
@@ -57,6 +67,8 @@ page-home {
         border-radius: 60%;
         background-color: white;
         margin: 5px 0px -10px 0px;
+		background: transparent;
+
       }
     }
   }

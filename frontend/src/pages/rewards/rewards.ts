@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the RewardsPage page.
@@ -15,11 +15,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class RewardsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RewardsPage');
+  }
+
+  presentToast() {
+    let toast = this.toastCtrl.create({
+      message: '50 ECOins will be debited in about 3 min!',
+      duration: 5000,
+	  position: 'top'
+    });
+    toast.present();
   }
 
 }
