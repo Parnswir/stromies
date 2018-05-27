@@ -1,3 +1,10 @@
 popover {
-
+  .item:hover{
+    background-color: #A1DBB2;
+    color: white;
+  }
+  width: 100%;
+  .list{
+    margin-bottom: 0px;
+  }
 }

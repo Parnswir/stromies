@@ -18,15 +18,12 @@ export class PopoverComponent {
 
   constructor(public viewCtrl: ViewController) {
     this.items = [
-      {item: 'Test 1'},
-      {item: 'Test 2'},
-      {item: 'Test 3'},
-      {item: 'Test 4'},
-      {item: 'Test 5'},
-      {item: 'Test 6'}
+      {item: 'Edit personal data'},
+      {item: 'Settings'},
+      {item: 'About'}
     ];
   }
-  
+
   itemClick(item) {
     this.viewCtrl.dismiss(item);
   }
